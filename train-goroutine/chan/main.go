@@ -20,7 +20,6 @@ func main() {
 		ch <- 1
 	}()
 	log.Println(<-ch)
-	// closeを2回するとpanicする
-	// close(ch)
+
 	log.Println("end")
 }

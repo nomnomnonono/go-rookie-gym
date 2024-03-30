@@ -8,8 +8,8 @@ import (
 )
 
 type user struct {
-	id   int    `json:"id"`
-	name string `json:"name"`
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 func (u *user) UnmarshalJSON(b []byte) error {
@@ -20,8 +20,8 @@ func (u *user) UnmarshalJSON(b []byte) error {
 	if err := json.Unmarshal(b, &u2); err != nil {
 		return err
 	}
-	u.id = u2.ID
-	u.name = u2.Name
+	u.ID = u2.ID
+	u.Name = u2.Name
 	return nil
 }
 

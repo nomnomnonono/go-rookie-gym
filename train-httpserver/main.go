@@ -14,13 +14,11 @@ func main() {
 	})
 	http.HandleFunc("/json", handler)
 
-	// ここの下に追加
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 type Payload struct {
-	// jsonタグを追加してみよう
-	// key名はname
-	MyName string
+	MyName string `json:"name"`
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -28,16 +26,19 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
+
 	var p Payload
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
 	if err := json.Unmarshal(body, &p); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
 	name := p.MyName
 	p.MyName = fmt.Sprintf("Hello %s", name)
 	j, err := json.Marshal(&p)
@@ -45,6 +46,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
 	w.WriteHeader(http.StatusOK)
 	w.Write(j)
 }
